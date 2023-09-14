@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="text-center">
+        <div class="alert alert-info" role="alert">
+        <h3>Do You want to order 1 portion of "{{menu_option.meal.name}}" for the lunch to {{menu_option.menu.date|date:"d.m.Y"}}? </br>Price for this great kind of meal is {{menu_option.meal.price}}kč</h3>
+        </div>
+        <div class="row m-3 ">
+                    <div class="col">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Yes</button>
+                        </form>
+
+                    </div>
+                    <div class="col">
+                            <a class="btn btn-secondary btn-lg btn-block" href="{% url 'lunch_week_list' %}">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<!--Horní panel pro filtrování v listu objednávek-->
+<div class="component m-3 p-3">
+    <form class="row" method="GET" action="{% url 'single_pizza_day' pizzaday.slug %}">
+      <div class="col-sm-3 p-3" >
+            <div class="row">
+                <div class="col-sm-12">
+                  <label for="selection">Selection:</label>
+                  <select class="form-select" name="selection-selection" id="selection">
+                    <option value="">All</option>
+                    <option value="hawai">hawai</option>
+                    <option value="funghi">funghi</option>
+                    <option value="salami">salami</option>
+                    <option value="ham & chicken">ham & chicken</option>
+                    <option value="quattro formaggi">quattro formaggi</option>
+                    <option value="deviola">deviola</option>
+                      <option value="olives">olives</option>
+                      <option value="doesn't matter which pizza">doesn't matter which pizza</option>
+                      <option value="salami">salami</option>
+                    <!-- Další možnosti výběru -->
+                  </select>
+                </div>
+            </div>
+      </div>
+      <div class="col-sm-3 p-3" >
+            <div class="row">
+                <div class="col-sm-12">
+                  <label for="selection">Time Filter:</label>
+                  <select class="form-select" name="time-selection" id="time">
+                    <option value="">All</option>
+                    <option value="10:00">10:00</option>
+                    <option value="10:30">10:30</option>
+                    <option value="12:00">12:00</option>
+                    <option value="17:45">17:45</option>
+                    <option value="18:30">18:30</option>
+                    <!-- Další možnosti výběru -->
+
+                  </select>
+                    <button type="submit" class="btn btn-secondary">Filter</button>
+                </div>
+            </div>
+      </div>
+
+      <div class="col-sm-3 p-3" >
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>Total sum of filtered pizzas is: </p>
+                    <p class="fw-bold">{{count_filtered}}</p>
+                </div>
+            </div>
+      </div>
+
+
+    </form>
+</div>
+
+
+
+<!--List objednávek-->
+<div class="component m-3 p-3">
+    <h2>Active pizza orders to date {{pizzaday.to_date|date:"d.m.Y"}}</h2>
+
+
+    <ul class="m-3">
+        <div class="row">
+            <div class="col p-2 d-flex flex-nowrap"><p class="fw-bold">Name:</p></div>
+            <div class="col p-2 d-flex flex-nowrap"><p class="fw-bold">Selection:</p></div>
+            <div class="col p-2 d-flex flex-nowrap"><p class="fw-bold">Delivery time:</p></div>
+        </div>
+        {% for order in orders %}
+        <div class="row">
+            <div class="col p-2 d-flex flex-nowrap">{{order.ordered_by.name}} {{order.ordered_by.surname}}</div>
+            <div class="col p-2 d-flex flex-nowrap">{{order.selection}}</div>
+            <div class="col p-2 d-flex flex-nowrap">{{order.to_time}}</div>
+        </div>
+        {%endfor%}
+    </ul>
+
+
+
+</div>
+{% endblock %}

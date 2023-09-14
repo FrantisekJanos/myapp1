@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+<div class="component m-3 p-3">
+    <div class="m-3 p-3">
+        <h3>Edit Account</h3>
+        <form method="POST" enctype="multipart/form-data" action="{% url 'edit_account' %}">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+{
+
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+{% include 'workcenter_button_list.html' %}
+<div class="component p-3 odsadit" >
+  <div class="container text-center">
+    <p class="m-1" > pozn.: Delete accident může jen uživatel s rolí "MaintenanceManager"</p>
+    <a href="{% url 'delete_workcenter' workcenter.id %}">
+      <button type="button" class="btn btn-dark">Delete workcenter</button>
+    </a>
+      <div>
+        <h3 class="nadpisy" >Accident list to: {{workcenter.name}}</h3>
+
+        <form class="d-flex align-items-center justify-content-center p-3 " method="GET" action="{% url 'workcenter_detail' workcenter.id %}">
+        <select name="sort_order" class="form-select form-select-lg" aria-label=".form-select-lg example">
+          <option selected>Select order from this select menu</option>
+          <option value="descendingProgress">Progress - from Not started to Completed</option>
+          <option value="ascendingProgress">Progress - from Completed to Not started</option>
+          <option value="descendingPriority">Priority - Descending</option>
+          <option value="ascendingPriority">Priority - Ascending</option>
+          <option value="descendingStartDate">Start Date - Descending</option>
+          <option value="ascendingStartDate">Start Date - Ascending</option>
+          <option value="descendingDueDate">Due Date - Descending</option>
+          <option value="ascendingDueDate">Due Date - Ascending</option>
+
+        </select>
+          <button type="submit" class="btn btn-primary">CONFIRM SELECTION</button>
+        </form>
+        <h5 class="d-flex align-items-left justify-content-center px-3">
+          <p>selected order:</p>
+          {% if sort_order == 'ascendingPriority' %}
+            <p>Priority - Ascending</p>
+          {% elif sort_order == 'descendingPriority' %}
+            <p>Priority - Descending</p>
+          {% elif sort_order == 'ascendingProgress' %}
+            <p>Progress - from Completed to Not started</p>
+          {% elif sort_order == 'descendingProgress' %}
+            <p>Progress - from Not started to Completed</p>
+          {% elif sort_order == 'ascendingStartDate' %}
+            <p>Start Date - Ascending</p>
+          {% elif sort_order == 'descendingStartDate' %}
+            <p>Start Date - Descending</p>
+          {% elif sort_order == 'ascendingDueDate' %}
+            <p>Due Date - Ascending</p>
+          {% elif sort_order == 'descendingDueDate' %}
+            <p>Due Date - Descending</p>
+          {% else %}
+            <p>No order selected</p>
+          {% endif %}
+        </h5>
+      </div>
+
+
+
+    </div>
+  <div class="container text-center">
+      <div class="row justify-content-start">
+        <div class="row">
+
+          {% for accident in accidents %}
+          <div class="col-lg-6">
+            <div>
+              {% if accident.accident_image %}
+              <a id="accident_list_cards" href="{% url 'accident_detail' accident.id %}">
+                <div class="d-flex justify-content-center row card mb-3 mx-1 zoom-on-hover ">
+                  <img style="max-width:200px" src="{{accident.accident_image.url}}" class="card-img-top mx-auto p-3" alt="hmmm">
+                  <div class="card-body ">
+                  <h5 class="card-title">{{accident.short_text}}</h5>
+                  <p class="card-text">{{accident.long_text}}</p>
+                    <div class="col-sm-12 d-flex">
+                      <ul class="col list-group list-group-flush">
+                        <li class="list-group-item">Priority:</li>
+                        <li class="list-group-item">Progress:</li>
+                      </ul>
+
+                      <ul class="col list-group list-group-flush">
+                        <li class="list-group-item">{{ accident.get_priority_display }}</li>
+                        <li class="list-group-item">{{ accident.get_progress_display }}</li>
+                      </ul>
+                      <ul class="col list-group list-group-flush">
+                        <li class="list-group-item">Start date:</li>
+                        <li class="list-group-item">Due date:</li>
+                      </ul>
+
+                      <ul class="col list-group list-group-flush">
+                        <li class="list-group-item">{{accident.start_date|date:"d.m.Y"}}</li>
+                        <li class="list-group-item">{{accident.due_date|date:"d.m.Y"}}</li>
+                      </ul>
+                  </div>
+              </a>
+              {% else %}
+                            <a id="accident_list_cards" href="{% url 'accident_detail' accident.id %}">
+                <div class="d-flex justify-content-center row card mb-3 mx-1 zoom-on-hover ">
+                  <!-- Content without the image -->
+                  <div class="card-body ">
+                  <h5 class="card-title">{{accident.short_text}}</h5>
+                  <p class="card-text">{{accident.long_text}}</p>
+                    <div class="col-sm-12 d-flex">
+                      <ul class="col list-group list-group-flush">
+                        <li class="list-group-item">Priority:</li>
+                        <li class="list-group-item">Progress:</li>
+                      </ul>
+
+                      <ul class="col list-group list-group-flush">
+                        <li class="list-group-item">{{ accident.get_priority_display }}</li>
+                        <li class="list-group-item">{{ accident.get_progress_display }}</li>
+                      </ul>
+                      <ul class="col list-group list-group-flush">
+                        <li class="list-group-item">Start date:</li>
+                        <li class="list-group-item">Due date:</li>
+                      </ul>
+
+                      <ul class="col list-group list-group-flush">
+                        <li class="list-group-item">{{accident.start_date|date:"d.m.Y"}}</li>
+                        <li class="list-group-item">{{accident.due_date|date:"d.m.Y"}}</li>
+                      </ul>
+                  </div>
+              </a>
+              {% endif%}
+            </div>
+
+              <div class="card-body">
+
+              </div>
+              <p class="card-text"><small class="text-body-secondary">Days since creation: {{accident.days_since_creation}} day{{accident.days_since_creation|pluralize:"s"}}</small></p>
+              <p class="card-text"><small class="text-body-secondary">Days count to fix in term(up to date): {{accident.days_to_date}} day{{accident.days_to_date|pluralize:"s"}}</small></p>
+              </div>
+        </div>
+
+      </div>
+
+          {% empty %}
+            <div class="alert alert-info" role="alert">
+              <h3>No active accident to {{workcenter.name}} was found.</h3>
+              <p>Everything seems to be solved ;-)</p>
+            </div>
+          {% endfor %}
+        </div>
+</div>
+
+
+
+{% endblock %}
+

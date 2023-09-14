@@ -1,0 +1,24 @@
+<div class="container-fluid text-center p-3 darker_color">
+
+  <div>
+    <a href="{% url 'create_workcenter' %}">
+      <button type="button" class="btn btn-danger m-3">Create new workcenter</button>
+    </a>
+
+    <a href="{% url 'create_accident' %}">
+      <button type="button" class="btn btn-danger m-3">Create new accident</button>
+    </a>
+
+    <h3 class="nadpisy" >Workcenter detail:  {{workcenter.name}}</h3>
+  </div>
+
+  <div class="row">
+    {% for workcenter in workcenters %}
+    <div class="d-grid gap-2 col-sm-6 col-md-4 col-lg-3 btn zoom-on-hover">
+      <a  href="{% url 'workcenter_detail' workcenter.id %}" >
+      <button type="button" class="btn btn-secondary btn-lg w-100">{{workcenter.name}}</button>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>

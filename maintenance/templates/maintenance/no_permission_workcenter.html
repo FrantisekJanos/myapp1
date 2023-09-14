@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="text-center">
+        <h2>You don't have permisson to this operation.</h2>
+
+        <div class="row m-3 ">
+
+            <div class="col">
+                    <a class="btn btn-primary btn-lg btn-block" href="{% url 'workcenter_detail' workcenter.id %}">Go back</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

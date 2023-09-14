@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="m-5">
+<h1>{{ selected_date }}</h1>
+    <form method="get">
+        <label for="dateFilter">Filter by date:</label>
+        <input type="date" id="dateFilter" name="dateFilter">
+        <button type="submit">Apply Filter</button>
+        <a href="{% url 'order_overview' %}">Clear Filter</a>
+    </form>
+    <table>
+        <tr class="table_header">
+            <th class="table_header">Ordered meal:</th>
+            <th class="table_header">Ordered by:</th>
+            <th class="table_header">To date:</th>
+        </tr>
+
+    {% for order in filter.qs %}
+        <tr>
+            <th>{% if order.menu_option.meal %}
+                  {{ order.menu_option.meal.name }}
+                  {% else %}
+                      "meal deleted"
+                  {% endif %}
+            </th>
+            <th>{{order.user.name}} {{order.user.surname}}</th>
+            <th>{{order.menu_option.menu.date|date:"d.m.Y"}}</th>
+
+        </tr>
+
+    {% endfor %}
+
+    </table>
+</div>
+
+
+
+
+{% endblock %}

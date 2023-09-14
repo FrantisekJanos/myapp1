@@ -1,0 +1,87 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+
+<div class="row justify-content-center align-items-start m-3 " style="height: 100vh;">
+    <div class="col-lg-8">
+      <div class="text-center component p-3">
+      <h1>My Orders</h1>
+
+      <form method="GET" action="{% url 'my_order_list' %}" class="m-3">
+        <label for="week">Select Week by this filter:</label>
+        <select name="week" id="week">
+          <option value="0" {% if selected_week|default_if_none:"0" == "0" %}selected{% endif %}>This Week</option>
+          <option value="-1" {% if selected_week|default_if_none:"0" == "-1" %}selected{% endif %}>Previous Week</option>
+          <option value="1" {% if selected_week|default_if_none:"0" == "1" %}selected{% endif %}>Next Week</option>
+        </select>
+        <input type="submit" value="Go">
+      </form>
+
+      {% if object_list %}
+        <h2 class="m-3">Menu for
+          {% if selected_week|default_if_none:"0" == "0" %}
+            This Week:
+          {% elif selected_week|default_if_none:"0" == "-1" %}
+            Previous Week:
+          {% elif selected_week|default_if_none:"0" == "1" %}
+            Next Week:
+          {% else %}
+            {{ selected_week|default_if_none:"0" }}
+          {% endif %}
+        </h2>
+
+        {% for day, my_orders in object_list.items %}
+          <h3 class="m-3">{{ day }}</h3>
+          <ul class="list-unstyled">
+            <li>
+              <div class="row fw-bold">
+                <div class="col">
+                  food
+                </div>
+                <div class="col">
+                  price
+                </div>
+
+                <div class="col">
+                  ordered by
+                </div>
+              </div>
+              </li>
+            {% for order in my_orders %}
+              <li>
+              <div class="row mt-3">
+                <div class="col">
+                  {% if order.menu_option.meal %}
+                  {{ order.menu_option.meal.name }}
+                  {% else %}
+                      "meal deleted"
+                  {% endif %}
+
+                </div>
+                <div class="col">
+                  {{ order.menu_option.meal.price }} kč
+                </div>
+                <div class="col">
+                  {{ order.user.name }} {{ order.user.surname }}
+                </div>
+
+              </div>
+              </li>
+
+            {% endfor %}
+
+          </ul>
+        {% endfor %}
+
+
+      {% else %}
+        <p>No menu orders for this week.</p>
+      {% endif %}
+    </div>
+    </div>
+
+</div>
+
+{% endblock %}

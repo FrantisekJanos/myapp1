@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class=" container " style="height: 100vh;">
+  <div class="row">
+    <div class="col p-2 mt-5" >
+      <h1>Change available portions for {{menu_option.meal.name}} to {{menu_option.menu.date|date:"d.m.Y"}}.</h1>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="number" id="portions" name="portions">
+
+        <button type="submit" class="btn btn-danger">Přidat / Odebrat peníze z účtu</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,162 @@
+{% extends 'main.html' %}
+
+{%block content%}
+<p class="m-1" > pozn.: "Edit accident" může jen autor accidentu nebo uživatel s rolí "MaintenanceManager". MaintenanceManager má přístup také ke všem ostatním tlačítkům.</p>
+<div class="row m-3" >
+    <div class="col-lg-6 p-2" >
+        <div class="component p-3">
+            <div class="m-3">
+                <h1>{{accident.workcenter}}</h1>
+                <h6>Reported problem:</h6>
+                <h3>{{accident.short_text|capfirst}}</h3>
+                <br>
+                <h6>Detailed description:</h6>
+                <p>{{accident.long_text|capfirst}}</p>
+            </div>
+        <div class="row bg-primary-subtle rounded m-3">
+            <div class="col-6 col-lg-3">
+                <h6>Priority</h6>
+                <p>{{accident.get_priority_display}}</p>
+            </div>
+            <div class="col-6 col-lg-3">
+                <h6>Progress</h6>
+                <p>{{accident.get_progress_display}}</p>
+            </div>
+            <div class="col-6 col-lg-3">
+                <h6>Start date</h6>
+                <p>{{accident.start_date|date:"d.m.Y"}}</p>
+            </div>
+            <div class="col-6 col-lg-3">
+                <h6>Due date</h6>
+                <p>{{accident.due_date|date:"d.m.Y"}}</p>
+            </div>
+        </div>
+        <div>
+            <p>Accident created by: {{accident.created_by.profile.name}} {{accident.created_by.profile.surname}}</p>
+        </div>
+        <div class="row">
+             <div class="col">
+                <a href="{% url 'edit_accident' accident.id %}">
+                  <button type="button" class="btn btn-danger">Edit accident</button>
+                </a>
+            </div>
+            <div class="col">
+              <a href="{% url 'delete_accident' accident.id %}">
+                <button type="button" class="btn btn-dark">Delete accident</button>
+              </a>
+            </div>
+        </div>
+        <div class="col d-flex mt-3 justify-content-center" >
+        <div class="component">
+            {% if accident.accident_image %}
+        <img style="max-height:600px" class="img-fluid h-100" src="{{accident.accident_image.url}}" alt="">
+            {% endif %}
+        </div>
+    </div>
+            <div class="col mt-5">
+                <h3 class="d-flex">Other pictures of reported problem:</h3>
+                <div id="carouselExample" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for image in current_accident.additional_images.all %}
+                        <div class="w-100 carousel-item {% if forloop.first %}active{% endif %}">
+                            <img class="d-block w-100" src="{{ image.image.url }}" alt="#" style="object-fit: contain; max-height: 450px;">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev btn-lg" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next btn-lg" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+    </div>
+    </div>
+
+    <div class="col-lg-6  align-items-center justify-content-center">
+        <div class="component p-3 mb-3">
+        <ul>
+            <h6>Tasks to do:</h6>
+                <div class="">
+                    <a href="{% url 'create_task' uuid=accident.id %}">
+                      <button type="button" class="btn btn-primary">Add task</button>
+                    </a>
+                </div>
+            {% for item in tasks %}
+            <div class="row bg-primary-subtle rounded m-4">
+                <div class="col mt-4">
+                    <h5>{{item.short_text}}</h5>
+                    <h6>start date: {{item.start_date|date:"d.m.Y"}}</h6>
+                    <h6>due date: {{item.due_date|date:"d.m.Y"}}</h6>
+                    <h6>responsible person:</h6>
+                    <p>{{item.owner.name}} {{item.owner.surname}}</p>
+                    <h6>progress: </h6>
+                    <p>{{item.get_progress_display}}</p>
+                    <h6>issued by:</h6>
+                    <p>{{item.created_by.profile.name}} {{item.created_by.profile.surname}}</p>
+                    <div class="row">
+                        <a class="m-3 col" href="{% url 'edit_task' item.id %}">
+                            <button type="button" class="btn btn-danger">Edit task</button>
+                        </a>
+                        <a class="m-3 col" href="{% url 'delete_task' item.id %}">
+                            <button type="button" class="btn btn-dark">Delete task</button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            {% empty %}
+            <div class="alert alert-info mt-3" role="alert">
+              <h3>No task related to this accident.</h3>
+              <p>Everything seems to be solved ;-)</p>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+    </div>
+
+</div>
+
+
+
+<!--    <div class="col-md-6">-->
+<!--        <h3 class="d-flex">Notes:</h3>-->
+
+<!--        <div class="mb-3">-->
+<!--          <label for="exampleFormControlInput1" class="form-label">Email address</label>-->
+<!--          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>-->
+<!--          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="formFileMultiple" class="form-label">Multiple files input example</label>-->
+<!--          <input class="form-control" type="file" id="formFileMultiple" multiple>-->
+<!--        </div>-->
+
+
+<!--    </div>-->
+    </div>
+</div>
+
+
+
+
+
+
+{% for image in additional_images %}
+
+{% endfor %}
+
+{%endblock%}
+
+
+<!--# Příklad vytvoření nové fotografie pro danou nehodu-->
+<!--accident = Accident.objects.get(pk=1)  # Předpokládáme, že máme instanci nehody s id 1-->
+<!--AdditionalImage.objects.create(accident=accident, image=my_image)-->
+<!--V tomto příkladu je třída AdditionalImage vnořena do třídy Accident. Můžete přistupovat k třídě AdditionalImage přes název Accident.AdditionalImage.-->

@@ -1,0 +1,88 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<p class="m-1" > pozn.: Každý user má nárok jen na jednu objednávku. Uživatel s rolí "LunchManager" může vytvářet pizzadays a otevírat a uzavírat registrace. </p>
+
+<div class="row m-3">
+    {% if last_pizzaday.registration_open %}
+    <div class="col-md-6 p-2" >
+        <div class="component p-3">
+            <h1>Order pizza to {{last_pizzaday.to_date|date:"d.m.Y"}}</h1>
+            {% if has_ordered %}
+            <div class="alert alert-info" role="alert">
+                <h3>Již máte objednanou pizzu pro tento den a po druhé byste měli moc plné bříško.</h3>
+            </div>
+            {% else %}
+            <form method="POST" class="form-container" action="{% url 'pizza_day_list' %}">
+                {% csrf_token %}
+                <div class="row">
+                    {% for field in form %}
+                    <div class="col-md-12 m-2">
+                        {% if field.name != 'pizza_day' and field.name != 'ordered_by'%}
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {% endif %}
+                        <input type="hidden" name="ordered_by" value="{{ request.user.profile.id }}">
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-md-12 m-3">
+                        <input type="submit" class="btn btn-primary" value="Odeslat">
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+            {% if messages %}
+              <ul class="messages">
+                {% for message in messages %}
+                  <div class="alert alert-success" role="alert">
+                      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  </div>
+                {% endfor %}
+              </ul>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+        <div class="component-red col-6">
+            <div class="d-flex justify-content-center align-items-center" style="height: 100%;" >
+                <h1 class="text-center">Registration is already closed for pizzaday {{ last_pizzaday.to_date|date:"d.m.Y" }}.</h1>
+            </div>
+        </div>
+    {% endif %}
+<!--    List of pizzadays(button to each pizzaday)-->
+    <div class="col-md-6 p-2" >
+        <div class="p-3 component">
+            {% if current_user.is_authenticated and has_lunchmanager_role %}
+            <h1>Maintain Pizzaday:</h1>
+                <div class="row">
+                    <h3 class="col-auto">
+                        <a class="btn btn-primary btn-lg" href="{% url 'create_pizza_day' %}">Create Pizzaday</a>
+                    </h3>
+                    <h3 class="col-auto">
+                        <a class="btn btn-secondary btn-lg" href="{% url 'registration_status_change' %}">Open/Close registration</a>
+                    </h3>
+                </div>
+            {%endif%}
+            <h1>Pizzaday details:</h1>
+            <ul>
+                {% for pizzaday in all_pizzadays %}
+                <div class="row">
+                    <h3 class="col-auto">
+                        <a class="btn btn-primary btn-lg" href="{% url 'single_pizza_day' pizzaday.slug %}">{{pizzaday.to_date|date:"d.m.Y"}}</a>
+                    </h3>
+                    {% if current_user.is_authenticated and has_lunchmanager_role %}
+                    <h3 class="col-auto">
+                        <a class="btn btn-secondary btn-lg" href="{% url 'delete_pizza_day' pizzaday.slug %}">delete</a>
+                    </h3>
+                    {%endif%}
+
+                </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

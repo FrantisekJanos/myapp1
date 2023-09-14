@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+{% if page == 'register' %}
+<div class="m-5 p-5 component">
+    <h3>Register User</h3>
+    <div>
+        <form method="POST" action="{% url 'login_register' %}" class="m-3">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Register User">
+
+        </form>
+    </div>
+
+    <p>Already have an account <a href="{% url 'login' %}">Login</a></p>
+</div>
+
+{% else %}
+<div class="m-5 p-5 component">
+    <h3>Log in</h3>
+    <form action="{% url 'login' %}" method="POST" class="m-3">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Enter password">
+        <input type="submit" value="Login">
+        <p class="m-3"><a href="{% url 'reset_password' %}">Forget password?</a></p>
+        <p>Dont't have an account <a href="{% url 'login_register' %}">Sign Up</a></p>
+    </form>
+</div>
+{% endif %}
+
+{% endblock %}

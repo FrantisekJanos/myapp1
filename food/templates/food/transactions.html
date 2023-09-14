@@ -1,0 +1,44 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="m-5">
+    <div>
+        <h1>All transactions records</h1>
+        <p>This slide is here just to keep all transaction history, even if Meal/Menu model will be deleted, it will stays recorded.<br>
+        In this slide are also all transactions related to change of account value(inputs/outputs/lunch orders).</p>
+    </div>
+<h3>{{ selected_date }}</h3>
+    <form method="get">
+        <label for="dateFilter">Filter by date:</label>
+        <input type="date" id="dateFilter" name="dateFilter">
+        <button type="submit">Apply Filter</button>
+        <a href="{% url 'transactions' %}">Clear Filter</a>
+    </form>
+    <table>
+        <tr class="table_header">
+            <th class="table_header">To date:</th>
+            <th class="table_header">Time:</th>
+            <th class="table_header">Ordered by:</th>
+            <th class="table_header">Transaction</th>
+            <th class="table_header">Value</th>
+        </tr>
+
+    {% for transaction in filter.qs %}
+        <tr>
+            <th>{{transaction.created_at|date:"d.m.Y"}}</th>
+            <th>{{transaction.created_at|time:"H:i:s"}}</th>
+            <th>{{transaction.related_user}}</th>
+            <th>{{transaction.transaction}}</th>
+            <th>{{transaction.value}}</th>
+        </tr>
+
+    {% endfor %}
+
+    </table>
+</div>
+
+
+
+
+{% endblock %}

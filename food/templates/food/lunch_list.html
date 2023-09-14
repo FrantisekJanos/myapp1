@@ -1,0 +1,156 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+<p class="m-1" > pozn.: Každý user si může obednat lunch a podívat na stav schých objednávek. Stav svého účtu kreditu může kontrolovat pod záložkou "MyProfile".<br>
+  Uživatel s rolí "LunchManager" může zakládat jídla do databáze, skládat menu pro každý týden a má přístup do změny stavu účtu každého uživatele. Transakce se zapisují jako stringy do karty "transaction" pro případ mazání jídel z databáze. </p>
+
+<div class="row" style="text-align: center;">
+  {% if current_user.is_authenticated and has_lunchmanager_role %}
+  <div class="row">
+    <a class="col" href="{% url 'create_meal' %}">
+      <button type="button" class="btn btn-warning m-3">Create new meal</button>
+    </a>
+      <a class="col" href="{% url 'lunch_meal_list' %}">
+      <button type="button" class="btn btn-dark m-3">Delete meal</button>
+    </a>
+    <a class="col" href="{% url 'create_menu' %}">
+      <button type="button" class="btn btn-warning m-3">Create menu</button>
+    </a>
+      <a class="col" href="{% url 'create_menu_option' %}">
+      <button type="button" class="btn btn-warning m-3">Create menu option</button>
+    </a>
+  </div>
+
+  <div class="col">
+    <a href="{% url 'order_overview' %}">
+      <button type="button" class="btn btn-danger m-3">Overview Orders</button>
+    </a>
+
+  </div>
+{%endif%}
+  <div class="col">
+    <a href="{% url 'my_order_list' %}">
+      <button type="button" class="btn btn-primary m-3">My orders</button>
+    </a>
+  </div>
+  {% if current_user.is_authenticated and has_lunchmanager_role %}
+  <div class="col">
+    <a href="{% url 'lunch_account_overview' %}">
+      <button type="button" class="btn btn-danger m-3">Overview Accounts</button>
+    </a>
+  </div>
+  <div class="col">
+    <a href="{% url 'transactions' %}">
+      <button type="button" class="btn btn-danger m-3">Overview Transactions</button>
+    </a>
+  </div>
+  {%endif%}
+</div>
+
+<div class="row justify-content-center align-items-start m-3 " style="height: 100vh;">
+    <div class="col-lg-8">
+      <div class="text-center component p-3">
+      <h1>Lunch Menu</h1>
+
+      <form method="GET" action="{% url 'lunch_week_list' %}" class="m-3">
+        <label for="week">Select Week by this filter:</label>
+        <select name="week" id="week">
+          <option value="0" {% if selected_week|default_if_none:"0" == "0" %}selected{% endif %}>This Week</option>
+          <option value="-1" {% if selected_week|default_if_none:"0" == "-1" %}selected{% endif %}>Previous Week</option>
+          <option value="1" {% if selected_week|default_if_none:"0" == "1" %}selected{% endif %}>Next Week</option>
+        </select>
+        <input type="submit" value="Go">
+      </form>
+
+      {% if object_list %}
+        <h2 class="m-3">Menu for
+          {% if selected_week|default_if_none:"0" == "0" %}
+            This Week:
+          {% elif selected_week|default_if_none:"0" == "-1" %}
+            Previous Week:
+          {% elif selected_week|default_if_none:"0" == "1" %}
+            Next Week:
+          {% else %}
+            {{ selected_week|default_if_none:"0" }}
+          {% endif %}
+        </h2>
+
+        {% for day, menu_options in object_list.items %}
+          <h3 class="m-3">{{ day }}</h3>
+          <ul class="list-unstyled">
+            <li>
+              <div class="row fw-bold">
+                <div class="col">
+                  food
+                </div>
+                <div class="col">
+                  price
+                </div>
+                <div class="col">
+                  available portions
+                </div>
+                <div class="col_1">
+                  order button
+                </div>
+                {% if current_user.is_authenticated and has_lunchmanager_role %}
+                <div class="col_1">
+                  delete menu option
+                </div>
+                <div class="col_1">
+                  change available portions
+                </div>
+                {%endif%}
+              </div>
+              </li>
+            {% for menu_option in menu_options %}
+              <li>
+              <div class="row mt-3">
+                <div class="col">
+                  {% if menu_option.meal %}
+                  {{ menu_option.meal.name }}
+                  {% else %}
+                      "meal deleted"
+                  {% endif %}
+                </div>
+                <div class="col">
+                  {{ menu_option.meal.price }} kč
+                </div>
+                <div class="col">
+                  {{ menu_option.available_portions }} pcs
+                </div>
+                {% if menu_option.available_portions > 0 and menu_option.menu.date > selected_date%}
+                <div class="col_1">
+                  <a class="btn btn-primary" href="{% url 'order_lunch' menu_option.id %}">order</a>
+                </div>
+                {% else %}
+                <div class="col">
+                  cannot order
+                </div>
+                {% endif %}
+                {% if current_user.is_authenticated and has_lunchmanager_role %}
+                <div class="col_1">
+                  <a class="btn btn-dark" href="{% url 'lunch_menu_option_delete' menu_option.id %}">delete</a>
+                </div>
+                <div class="col_1">
+                  <a class="btn btn-warning" href="{% url 'edit_available_portions' menu_option.id %}">change</a>
+                </div>
+                {%endif%}
+              </div>
+              </li>
+
+            {% endfor %}
+
+          </ul>
+        {% endfor %}
+
+
+      {% else %}
+        <p>No menu options available.</p>
+      {% endif %}
+    </div>
+    </div>
+
+</div>
+
+{% endblock %}

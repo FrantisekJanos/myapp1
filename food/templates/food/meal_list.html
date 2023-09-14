@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+<div class="" style="height: 100vh;">
+    <div class="text-center">
+        <h2>Meal list:</h2>
+
+        <div class="row m-3 ">
+            <div class="col">
+<ol>
+    {% for meal in meals %}
+    <li class="row m-3 ">
+        <div class="col">
+        <p>
+
+            {{meal.name}} za {{meal.price}} kč
+            <a class="btn btn-dark" href="{% url 'lunch_meal_delete' meal.id %}">delete</a>
+        </p>
+        </div>
+    </li>
+    {% endfor %}
+</ol>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="{% static 'styles/app.css' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,900;1,100;1,400;1,900&family=Roboto+Condensed:wght@400;700&family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
+    <title>myApp</title>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-danger" >
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% block content %}
+    <div class="d-flex justify-content-center  p-5">
+        <div class="component p-3" >
+        <h3>Tento projekt má za cíl procvičení funkcionalit frameworku Django.</h3>
+        <h3>Na stylování bylo vynaloženo minimální úsilí, použil jsem pouze sadu nástrojů Bootstrap.</h3>
+        <h3>Webová aplikace je navržena pro správu jednoduché denní operativy fiktivního výrobního závodu.</h3>
+        </div>
+
+    </div>
+    <div class="p-5">
+        <div>
+            <h1>Pro zpřístupnění aplikace se zaregistrujte</h1>
+            <h5>Pro vyzkoušení uživatele s rolí "LunchManager" se přihlašte jako username:"evasmetana"</h5>
+            <h5>Pro vyzkoušení uživatele s rolí "MaintenanceManager" se přihlašte jako username:"lukasvrabec"</h5>
+            <h5>Oba k dispozici pod heslem "ferdaferda"</h5>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center p-5 read-me">
+        <div class="component p-3" >
+        <h1>Read me: </h1>
+        <h3>Záložka "Profiles":</h3>
+        <p>Zobrazí list zaregistrovaných uživatelů s informací o jménu, emailu a přiřazených rolích.
+            Po registraci nemá user žádné role, ty definuje pouze superuser v django-admin prostředí.
+            <br>Jsou tři základní role:MaintenanceOperator, MaintananceManager, LunchManager.
+            <br>Jak už role napovídají, dávají různá práva při správě sekce Maintanance a sekce Lunchorder a Pizzaday.
+        </br>Ke každému uživateli lze otevřít jeho detail, ve kterém lze vidět a seřazovat úkoly, které mu byly přiřazeny.</p>
+        <h3>Záložka "MyProfile":</h3>
+        <p>Je viditelná jen přihlášenému userovi a zobrazí detail profilu přihlášeného usera. Je zde tlačítko "edit" pro editaci usera.
+        </br>User v tomto detailu může měnit status jemu přiřazených úkolů(Not started/ In progress/ Completed). Pokud změní status na "completed", úkol zmizí z tabulky to-do tasks a přesune se do tabulky completed tasks.</p>
+        <h3>Záložka "Pizzaday":</h3>
+            <p>Slouží k registracím k objednávkám pizzy pro pizzaday. </br>Jen uživatel s rolí "LunchManager" může vytvářet
+                jednotlivé Pizzaday. Má také právo otevřít a uzavřít registrace.
+                </br>Registrační formulář objednává pizzu jen do nejblížšíého termínu k aktuálnímu datu.
+            <br>Pizzu si může objednat jen přihlášený uživatel a má nárok jen na jednu pizzu k jednomu pizzaday.
+            <br>Pokud neníuživatel přihlášený, bude při pokusu o objednání přesměrován na login.</p>
+        <h3>Záložka "Maintenance"</h3>
+            <p>V horní části stránky je list buttonů pro vstup do "workcenter detail"(zobrazí accidenty k danému workcenteru) a ve spodní části obrazovky jsou karty accidentů
+                (všechny accidenty pokud neotevřeme konkrétní workcenter detail).
+                Karty je možné seřazovat pomocí selektoru.
+                </br> Aplikace má za cíl suplovat planner v aplikaci MS Teams. Je možné zde registrovat Workcentera/Stroje,
+                vytvářet Accidents/Poruchy a jednotlivým poruchám přidávat Tasky/Úkoly a přiřazovat je jednotlivým uživatelům k vyřešení.</br>
+                Vytvářet accidenty může kterýkoliv přihlášený user. Nepřihlášený user bude po stisknutí tlačítka "create accident" přesměrován na login.</br>
+                Editovat accidenty může jen user s rolí "MaintenanceManager" nebo ten kdo accident vytvořil pod svým loginem.</br>
+                Avšak mazat accidenty a vytvářet/editovat/mazat jednotlivé Tasky může jen user s rolí "MaintenanceManager".
+            </p>
+        <h3>Záložka "Lunchorder":</h3>
+            <p>Uživatelé s rolí Lunchmanager mohou vytvářet jídla, která jsou viditelná všem uživatelům. Jídla mohou mít různé ceny a množství.<br>
+                Může také dobíjet uživatelům peníze na účet a odebírat z účtu, má možnost vidět historii všech transakcí uživatelů a jejich objednávky<br>
+                Uživatelé s rolí Lunchmanager mohou také vytvářet nabídky obědů pro jednotlivé dny.
+
+                </br>Nabídka obědů k objednání jsou viditelná jen pro minulý, aktuální a příští týden.
+                </br>Ke každé volbě menu je zobrazena cena, množství a objednávací tlačítko. LunchManager user má možnost editovat a mazat nabídky.
+            <br>V případě objednávky se uživateli strhnou peníze z účtu a ubere se jedna porce z nabídky.
+            <br>Pokud není uživatel přihlášený, bude při pokusu o objednání přesměrován na login.</p>
+        <h3>REST API:</h3>
+            <h5>ENDPOINTS</h5>
+            <p>GET /api/users/token/ - po přihlášení userem vrátí 'refresh' a 'access' token</p>
+            <p>GET /api/accidents/ - zobrazí všechny accidents</p>
+            <p>GET /api/accidents/&lt;str:pk&gt;/ - zobrazí detail accidentu</p>
+            <p>GET /api/accidents/&lt;str:pk&gt;/tasks/ - zobrazí všechny tasky k danému accidentu</p>
+
+<!--            <p>POST /api/accidents/ - vytvoří nový accident</p>-->
+        </div>
+    </div>
+{% endblock %}
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</html>

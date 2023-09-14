@@ -1,0 +1,27 @@
+
+
+{% extends 'main.html' %}
+
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="text-center">
+        <h1>By deleting this meal you will delete meal also from existing orders!!!</h1>
+        <h2>Are you sure you want to delete "{{ object }}"?</h2>
+
+        <div class="row m-3 ">
+            <div class="col">
+            <form method="post">{% csrf_token %}
+                <p></p>
+                {{ form }}
+                <input type="submit" value="Confirm">
+            </form>
+
+            </div>
+            <div class="col">
+                    <a class="btn btn-secondary btn-lg btn-block" href="{% url 'lunch_meal_list' %}">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
