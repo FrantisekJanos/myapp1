@@ -135,6 +135,7 @@ WSGI_APPLICATION = 'myapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+#AWS database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -145,6 +146,18 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+#Local database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'myApp1',
+#         'USER': 'postgres',
+#         'PASSWORD': os.environ.get('DB_PASS'),
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
