@@ -219,7 +219,7 @@ class LunchWeekList(ListView):
             weekdays_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 
             for menu_option in queryset:
-                day = menu_option.menu.date.strftime('%A')  # Získání názvu dne v týdnu
+                day = menu_option.menu.date.strftime('%A')
                 if day in menu_options_by_day:
                     menu_options_by_day[day].append(menu_option)
                 else:

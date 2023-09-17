@@ -231,9 +231,9 @@ class CreateTask(LoginRequiredMixin, HasRequiredRoleMixin, View):
             return redirect("no_permission", pk=accident.id)
 
         initial_data = {'accident': accident,
-                        'created_by': request.user}  # Předvyplníme form pro konkrétní accident a vlastníka
+                        'created_by': request.user}
         form = self.form_class(initial=initial_data)
-        # form = self.form_class(initial={'accident': accident}) # Předvyplníme form pro konkrétní accident
+
         context = {
             'form': form,
             'accident': accident,
@@ -269,7 +269,7 @@ class EditTask(LoginRequiredMixin, HasRequiredRoleMixin, View):
         if not self.has_required_role(request.user, required_roles):
             return redirect("no_permission", pk=accident.id)
 
-        form = self.form_class(instance=task)  # Předvyplníme form údaji z konkrétního úkolu
+        form = self.form_class(instance=task)
         context = {
             'form': form,
             'accident': accident,
