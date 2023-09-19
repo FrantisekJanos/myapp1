@@ -13,7 +13,7 @@
                 <h3>Již máte objednanou pizzu pro tento den a po druhé byste měli moc plné bříško.</h3>
             </div>
             {% else %}
-            <form method="POST" class="form-container" action="{% url 'pizza_day_list' %} onsubmit="disableButtonAndShowLoader('myButton13')"">
+            <form method="POST" class="form-container" action="{% url 'pizza_day_list' %}" onsubmit="disableButtonAndShowLoader('myButton13')">
                 {% csrf_token %}
                 <div class="row">
                     {% for field in form %}
