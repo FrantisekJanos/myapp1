@@ -27,11 +27,11 @@
 {% else %}
 <div class="m-5 p-5 component">
     <h3>Log in</h3>
-    <form action="{% url 'login' %}" method="POST" class="m-3">
+    <form action="{% url 'login' %}" method="POST" class="m-3" onsubmit="disableButtonAndShowLoader('myButton27')">
         {% csrf_token %}
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Enter password">
-        <input type="submit" value="Login">
+        <input id="myButton27" type="submit" value="Login">
         <p class="m-3"><a href="{% url 'reset_password' %}">Forget password?</a></p>
         <p>Dont't have an account <a href="{% url 'login_register' %}">Sign Up</a></p>
     </form>

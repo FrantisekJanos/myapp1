@@ -7,16 +7,16 @@
 {% if last_pizzaday.registration_open %}
 <h1>Registration to {{last_pizzaday.to_date|date:"d.m.Y"}} is OPEN.</h1>
 <h1>Do you want to close that?</h1>
-<form method="POST" action="">
+<form method="POST" action="" onsubmit="disableButtonAndShowLoader('myButton14')">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger btn-lg btn-block">CLOSE</button>
+    <button id="myButton14" type="submit" class="btn btn-danger btn-lg btn-block">CLOSE</button>
 </form>
 {% else %}
 <h1>Registration to {{last_pizzaday.to_date|date:"d.m.Y"}} is CLOSED.</h1>
 <h1>Do you want to open that?</h1>
-<form method="POST" action="">
+<form method="POST" action="" onsubmit="disableButtonAndShowLoader('myButton15')">
     {% csrf_token %}
-    <button type="submit" class="btn btn-primary btn-lg btn-block">OPEN</button>
+    <button id="myButton15" type="submit" class="btn btn-primary btn-lg btn-block">OPEN</button>
 </form>
 {% endif %}
     </div>

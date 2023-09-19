@@ -7,13 +7,13 @@
     <div class="row">
         <div class="col-6 p-2 m-3">
             <div>
-                <form method="POST" class="form-container" action="{% url 'create_pizza_day' %}">
+                <form method="POST" class="form-container" action="{% url 'create_pizza_day' %}" onsubmit="disableButtonAndShowLoader('myButton6')">
                     {%csrf_token%}
                     <div class="row">
                         {{form.to_date}}
                     </div>
                     <div class="row">
-                        <input type="submit" class="btn btn-primary mt-3" value="Odeslat">
+                        <input id="myButton6" type="submit" class="btn btn-primary mt-3" value="Odeslat">
                     </div>
                 </form>
                 {% if messages %}

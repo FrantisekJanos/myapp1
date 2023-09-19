@@ -5,11 +5,11 @@
   <div class="row">
     <div class="col p-2 mt-5" >
       <h1>{{person.name}} {{person.surname}}</h1>
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" onsubmit="disableButtonAndShowLoader('myButton8_1')">
         {% csrf_token %}
         <input type="number" id="cash" name="cash">
 
-        <button type="submit" class="btn btn-danger">Přidat / Odebrat peníze z účtu</button>
+        <button id="myButton8_1" type="submit" class="btn btn-danger">Přidat / Odebrat peníze z účtu</button>
       </form>
 
     </div>

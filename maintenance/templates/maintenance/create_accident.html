@@ -5,13 +5,13 @@
   <div class="row">
     <div class="col p-2 mt-5" >
 
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" onsubmit="disableButtonAndShowLoader('myButton2')">
         {% csrf_token %}
         {{ form.as_p }}
         <p>additional images:</p>
         {{ form.additional_images_formset.as_p }}
 
-        <button type="submit" class="btn btn-danger">Uložit nehodu</button>
+        <button id="myButton2" type="submit" class="btn btn-danger">Uložit nehodu</button>
       </form>
 
     </div>

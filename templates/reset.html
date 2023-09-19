@@ -6,10 +6,10 @@
     <h3>Enter new password</h3>
     <p>Please enter your new password twice so we can verify you typed it in correctly.</p>
 
-    <form method="POST">
+    <form method="POST" onsubmit="disableButtonAndShowLoader('myButton25')">
         {% csrf_token %}
         {{form.as_p}}
-        <input class="btn btn-primary " type="submit">
+        <input id="myButton25" class="btn btn-primary " type="submit">
     </form>
 </div>
 {% endblock %}

@@ -8,10 +8,10 @@
         <h1>{{accident.short_text}}</h1>
         <div class="row m-3 ">
             <div class="col">
-                <form method="POST">
+                <form method="POST" onsubmit="disableButtonAndShowLoader('myButton22')">
                     {% csrf_token %}
                     <input type="hidden" name="slug" value="{{ accident.id }}">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Yes</button>
+                    <button id="myButton22" type="submit" class="btn btn-primary btn-lg btn-block">Yes</button>
                 </form>
 
             </div>

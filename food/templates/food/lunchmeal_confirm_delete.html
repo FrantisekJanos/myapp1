@@ -11,10 +11,10 @@
 
         <div class="row m-3 ">
             <div class="col">
-            <form method="post">{% csrf_token %}
+            <form method="post" onsubmit="disableButtonAndShowLoader('myButton10')">{% csrf_token %}
                 <p></p>
                 {{ form }}
-                <input type="submit" value="Confirm">
+                <input id="myButton10" type="submit" value="Confirm">
             </form>
 
             </div>

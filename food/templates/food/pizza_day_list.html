@@ -13,7 +13,7 @@
                 <h3>Již máte objednanou pizzu pro tento den a po druhé byste měli moc plné bříško.</h3>
             </div>
             {% else %}
-            <form method="POST" class="form-container" action="{% url 'pizza_day_list' %}">
+            <form method="POST" class="form-container" action="{% url 'pizza_day_list' %} onsubmit="disableButtonAndShowLoader('myButton13')"">
                 {% csrf_token %}
                 <div class="row">
                     {% for field in form %}
@@ -21,7 +21,7 @@
                         {% if field.name != 'pizza_day' and field.name != 'ordered_by'%}
                         <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                         {% endif %}
-                        <input type="hidden" name="ordered_by" value="{{ request.user.profile.id }}">
+                        <input id="myButton13" type="hidden" name="ordered_by" value="{{ request.user.profile.id }}">
                         {{ field }}
                     </div>
                     {% endfor %}

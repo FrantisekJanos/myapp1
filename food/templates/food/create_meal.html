@@ -5,12 +5,12 @@
   <div class="row">
     <div class="col p-2 mt-5">
 
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" onsubmit="disableButtonAndShowLoader('myButton4')">
         {% csrf_token %}
         {{ form.as_p }}
 
 
-        <button type="submit" class="btn btn-danger">Vytvořit jídlo</button>
+        <button id="myButton4" type="submit" class="btn btn-danger">Vytvořit jídlo</button>
       </form>
 
     </div>
