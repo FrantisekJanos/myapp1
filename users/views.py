@@ -64,7 +64,8 @@ def register_user(request):
     return render(request, 'users/login_register.html', context)
 
 def profiles(request):
-    profiles = Profile.objects.all()
+    excluded_username = "a091124"
+    profiles = Profile.objects.exclude(user__username=excluded_username).all()
     context = {'profiles': profiles}
 
     return render(request, 'users/profiles.html', context)
