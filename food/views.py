@@ -106,7 +106,7 @@ class SinglePizzaDayView(View):
 
 def create_pizza_day(request):
     user = request.user
-    if not user.profile.role_set.filter(name='MaintenanceManager').exists():
+    if not user.profile.role_set.filter(name='LunchManager').exists():
         return redirect('pizza_day_list')
     form = CreatePizzadayForm()
 
