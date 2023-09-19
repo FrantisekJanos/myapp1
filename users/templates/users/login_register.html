@@ -6,21 +6,21 @@
 <div class="m-5 p-5 component">
     <h3>Register User</h3>
     <div>
-        <form method="POST" action="{% url 'login_register' %}" class="m-3" onsubmit="return disableButton()">
+        <form method="POST" action="{% url 'login_register' %}" class="m-3" onsubmit="disableButtonAndShowLoader('myButton50')">
             {% csrf_token %}
             {{form.as_p}}
-            <input id="myButton" type="submit" value="Register User">
+            <input id="myButton50" type="submit" value="Register User">
             <div id="loader" class="loader" style="display:none;"></div>
         </form>
 
     </div>
-    <script>
-      function disableButton() {
-        document.getElementById("myButton").disabled = true;
-        document.getElementById("loader").style.display = "block";
-        return true;
-      }
-    </script>
+<!--    <script>-->
+<!--      function disableButton() {-->
+<!--        document.getElementById("myButton").disabled = true;-->
+<!--        document.getElementById("loader").style.display = "block";-->
+<!--        return true;-->
+<!--      }-->
+<!--    </script>-->
     <p>Already have an account <a href="{% url 'login' %}">Login</a></p>
 </div>
 
